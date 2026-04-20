@@ -25,3 +25,6 @@ jobs:
 
       - name: Run tests and build jar
         run: ./mvnw clean verify
+
+      - name: Build Docker image
+        run: docker build -t games-api:ci .
