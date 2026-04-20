@@ -1,0 +1,20 @@
+spring:
+  application:
+    name: games-api
+
+server:
+  port: 8080
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics
+  endpoint:
+    health:
+      show-details: always
+
+aws:
+  region: us-east-1
+  s3-bucket: local-games-bucket
+  games-cloudfront: https://dummy-cloudfront-domain.net
