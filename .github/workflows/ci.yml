@@ -37,14 +37,23 @@ jobs:
         id: login-ecr
         uses: aws-actions/amazon-ecr-login@v2
 
+      - name: Set short commit SHA
+        run: echo "SHORT_SHA=${GITHUB_SHA::7}" >> $GITHUB_ENV
+
       - name: Build Docker image
         run: docker build -t games-api:ci .
 
-      - name: Tag Docker image for ECR
+      - name: Tag Docker image as latest
         run: docker tag games-api:ci 004878717876.dkr.ecr.us-east-1.amazonaws.com/games-api:latest
 
-      - name: Push Docker image to ECR
+      - name: Tag Docker image with commit SHA
+        run: docker tag games-api:ci 004878717876.dkr.ecr.us-east-1.amazonaws.com/games-api:${{ env.SHORT_SHA }}
+
+      - name: Push latest image to ECR
         run: docker push 004878717876.dkr.ecr.us-east-1.amazonaws.com/games-api:latest
+
+      - name: Push commit SHA image to ECR
+        run: docker push 004878717876.dkr.ecr.us-east-1.amazonaws.com/games-api:${{ env.SHORT_SHA }}
 
       - name: Force new ECS deployment
         run: |
