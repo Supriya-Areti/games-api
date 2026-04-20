@@ -45,3 +45,10 @@ jobs:
 
       - name: Push Docker image to ECR
         run: docker push 004878717876.dkr.ecr.us-east-1.amazonaws.com/games-api:latest
+
+      - name: Force new ECS deployment
+        run: |
+          aws ecs update-service \
+            --cluster games-api-cluster \
+            --service games-api-task-service-2016y2ts \
+            --force-new-deployment
